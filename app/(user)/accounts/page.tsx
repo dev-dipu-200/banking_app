@@ -1,8 +1,4 @@
-
-export default function AccountsPage() {
-    return (
-        <div>
-            <h1>accounts</h1>
-        </div>
-    )
+// app/(user)/accounts/page.tsx
+export default function Accounts() {
+  return <h1 className="text-3xl font-bold">My Accounts</h1>;
 }

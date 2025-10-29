@@ -1,8 +1,4 @@
-
-export default function DashboardPage() {
-    return (
-        <div>
-            <h1>dashboard</h1>
-        </div>
-    )
+// app/(user)/dashboard/page.tsx
+export default function Dashboard() {
+  return <h1 className="text-3xl font-bold">User Dashboard</h1>;
 }

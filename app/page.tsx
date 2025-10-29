@@ -9,7 +9,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col bg-zinc-50 font-sans dark:bg-gray-600">
-      <Navbar isAuthenticated={false} />
       <div className="flex-1 flex flex-col items-center justify-center">
         <h1 className="text-4xl font-bold text-zinc-800 dark:text-zinc-200 text-center mb-8">
           Welcome to Banking App!
