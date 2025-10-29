@@ -31,7 +31,7 @@ export default function Home() {
           <Login
             width="400px"
             fields={[
-              { id: "email", label: "Email", type: "email" },
+              { id: "username", label: "Username", type: "text" },
               { id: "password", label: "Password", type: "password" },
             ]}
           />
@@ -39,7 +39,7 @@ export default function Home() {
           <Register
             width="500px"
             fields={[
-              { id: "email", label: "Email", type: "email" },
+              { id: "username", label: "Username", type: "text" },
               { id: "password", label: "Password", type: "password" },
               { id: "confirmPassword", label: "Confirm Password", type: "password" },
               { id: "type", label: "Account Type", type: "text" },
