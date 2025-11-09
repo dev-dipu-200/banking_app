@@ -36,22 +36,63 @@ export default function UserSidebar() {
       {/* Sidebar */}
       <aside
         className={`
-          fixed inset-y-0 left-0 z-40 w-64 bg-white dark:bg-gray-800 shadow-lg
+          fixed inset-y-0 left-0 z-40 w-64 bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 shadow-2xl border-r border-gray-200 dark:border-gray-700
           transform transition-transform duration-300 ease-in-out
           ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0
         `}
       >
-        <div className="p-4 border-b dark:border-gray-700">
-          <h2 className="text-xl font-bold text-zinc-800 dark:text-zinc-200">
-            My Account
-          </h2>
+        <div className="p-6 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-blue-600 to-purple-600">
+          <div className="flex items-center space-x-3">
+            <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
+            <div>
+              <h2 className="text-lg font-bold text-white">
+                My Account
+              </h2>
+              <p className="text-xs text-white/70">Welcome back!</p>
+            </div>
+          </div>
         </div>
 
-        <nav className="mt-2 p-2 space-y-1">
+        <nav className="mt-4 p-3 space-y-2">
           {navItems.map((item) => {
             const isActive =
               pathname === item.href ||
               (item.href !== '/user/me' && pathname.startsWith(`${item.href}/`));
+
+            const getIcon = (label: string) => {
+              switch(label) {
+                case 'Dashboard':
+                  return (
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                  );
+                case 'Accounts':
+                  return (
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                    </svg>
+                  );
+                case 'Transactions':
+                  return (
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                    </svg>
+                  );
+                case 'Profile':
+                  return (
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  );
+                default:
+                  return null;
+              }
+            };
 
             return (
               <Link
@@ -59,17 +100,23 @@ export default function UserSidebar() {
                 href={item.href}
                 onClick={() => setIsOpen(false)}
                 className={`
-                  block w-full text-left px-4 py-2.5 text-sm font-medium
-                  rounded-tr-lg rounded-br-lg
+                  flex items-center space-x-3 w-full text-left px-4 py-3 text-sm font-semibold
+                  rounded-xl
                   transition-all duration-200
                   ${
                     isActive
-                      ? 'bg-blue-600 text-white'
-                      : 'text-zinc-700 dark:text-zinc-300 hover:bg-green-600 hover:text-white'
+                      ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg transform scale-105'
+                      : 'text-gray-700 dark:text-gray-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 dark:hover:from-gray-700 dark:hover:to-gray-600 hover:scale-105'
                   }
                 `}
               >
-                {item.label}
+                {getIcon(item.label)}
+                <span>{item.label}</span>
+                {isActive && (
+                  <svg className="w-4 h-4 ml-auto" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                  </svg>
+                )}
               </Link>
             );
           })}

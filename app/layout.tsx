@@ -1,7 +1,6 @@
 // app/layout.tsx
 import type { Metadata } from 'next';
 import './globals.css';
-import Navbar from '@/components/Navbar';
 import ClientProvider from '@/components/ClientProvider';
 
 export const metadata: Metadata = {
@@ -14,11 +13,9 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const isAuthenticated = false;
-
   return (
-    <html lang="en" className="h-full">
-      <body className="h-full bg-zinc-50 dark:bg-gray-600" cz-shortcut-listen="true">
+    <html lang="en" className="h-full" suppressHydrationWarning>
+      <body className="h-full min-h-screen" suppressHydrationWarning>
         <ClientProvider>
           {children}
         </ClientProvider>

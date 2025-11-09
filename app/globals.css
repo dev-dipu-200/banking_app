@@ -1,9 +1,88 @@
 @import "tailwindcss";
 
-:root {
+/* ================================
+   THEME VARIABLES
+   ================================ */
+
+/* Light Theme (Default) */
+:root,
+.light {
   --background: #ffffff;
   --foreground: #171717;
+  --card-bg: #ffffff;
+  --card-border: #e5e7eb;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --accent-from: #3b82f6;
+  --accent-to: #8b5cf6;
+  --hover: #f3f4f6;
+  --border: #e5e7eb;
+  --shadow: rgba(0, 0, 0, 0.1);
 }
+
+/* Dark Theme */
+.dark {
+  --background: #0f172a;
+  --foreground: #f1f5f9;
+  --card-bg: #1e293b;
+  --card-border: #334155;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --accent-from: #3b82f6;
+  --accent-to: #8b5cf6;
+  --hover: #334155;
+  --border: #334155;
+  --shadow: rgba(0, 0, 0, 0.5);
+}
+
+/* Orange Theme */
+.orange {
+  --background: #fff7ed;
+  --foreground: #7c2d12;
+  --card-bg: #ffedd5;
+  --card-border: #fed7aa;
+  --text-primary: #9a3412;
+  --text-secondary: #c2410c;
+  --accent-from: #f97316;
+  --accent-to: #ea580c;
+  --hover: #fed7aa;
+  --border: #fdba74;
+  --shadow: rgba(249, 115, 22, 0.2);
+}
+
+/* Purple Theme */
+.purple {
+  --background: #faf5ff;
+  --foreground: #581c87;
+  --card-bg: #f3e8ff;
+  --card-border: #e9d5ff;
+  --text-primary: #6b21a8;
+  --text-secondary: #7c3aed;
+  --accent-from: #a855f7;
+  --accent-to: #7c3aed;
+  --hover: #e9d5ff;
+  --border: #d8b4fe;
+  --shadow: rgba(168, 85, 247, 0.2);
+}
+
+/* Green Theme */
+.green {
+  --background: #f0fdf4;
+  --foreground: #14532d;
+  --card-bg: #dcfce7;
+  --card-border: #bbf7d0;
+  --text-primary: #166534;
+  --text-secondary: #15803d;
+  --accent-from: #22c55e;
+  --accent-to: #16a34a;
+  --hover: #bbf7d0;
+  --border: #86efac;
+  --shadow: rgba(34, 197, 94, 0.2);
+}
+
+/* ================================
+   BASE STYLES
+   ================================ */
 
 @theme inline {
   --color-background: var(--background);
@@ -12,15 +91,520 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
 }
 
 body {
+  min-height: 100vh;
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ================================
+   SCROLLBAR STYLES
+   ================================ */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-secondary);
+  border-radius: 5px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-primary);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--text-secondary) var(--background);
+}
+
+/* ================================
+   SMOOTH TRANSITIONS
+   ================================ */
+
+*,
+*::before,
+*::after {
+  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Disable transitions on theme change for instant feedback */
+html.theme-transitioning * {
+  transition: none !important;
+}
+
+/* ================================
+   ANIMATIONS
+   ================================ */
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.3s ease-out;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s ease-out;
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+  background: linear-gradient(to right, transparent 0%, var(--hover) 50%, transparent 100%);
+  background-size: 1000px 100%;
+}
+
+/* ================================
+   UTILITY CLASSES
+   ================================ */
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px -1px var(--shadow), 0 2px 4px -2px var(--shadow);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 10px 15px -3px var(--shadow), 0 4px 6px -4px var(--shadow);
+  transform: translateY(-2px);
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--accent-from), var(--accent-to));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-bg {
+  background: linear-gradient(135deg, var(--accent-from), var(--accent-to));
+}
+
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -4px var(--shadow);
+}
+
+/* ================================
+   THEME-SPECIFIC OVERRIDES
+   ================================ */
+
+/* Override Tailwind's bg-white, bg-gray classes to use theme variables */
+.light .bg-white,
+.dark .bg-white,
+.orange .bg-white,
+.purple .bg-white,
+.green .bg-white {
+  background-color: var(--card-bg) !important;
+}
+
+.light .bg-gray-50,
+.dark .bg-gray-50,
+.orange .bg-gray-50,
+.purple .bg-gray-50,
+.green .bg-gray-50,
+.dark .dark\:bg-gray-800,
+.orange .dark\:bg-gray-800,
+.purple .dark\:bg-gray-800,
+.green .dark\:bg-gray-800 {
+  background-color: var(--card-bg) !important;
+}
+
+.light .bg-gray-100,
+.dark .bg-gray-100,
+.orange .bg-gray-100,
+.purple .bg-gray-100,
+.green .bg-gray-100,
+.dark .dark\:bg-gray-900,
+.orange .dark\:bg-gray-900,
+.purple .dark\:bg-gray-900,
+.green .dark\:bg-gray-900 {
+  background-color: var(--background) !important;
+}
+
+/* Text colors */
+.light .text-gray-900,
+.dark .text-gray-900,
+.orange .text-gray-900,
+.purple .text-gray-900,
+.green .text-gray-900,
+.dark .dark\:text-white,
+.orange .dark\:text-white,
+.purple .dark\:text-white,
+.green .dark\:text-white,
+.dark .dark\:text-gray-200,
+.orange .dark\:text-gray-200,
+.purple .dark\:text-gray-200,
+.green .dark\:text-gray-200 {
+  color: var(--text-primary) !important;
+}
+
+.light .text-gray-600,
+.dark .text-gray-600,
+.orange .text-gray-600,
+.purple .text-gray-600,
+.green .text-gray-600,
+.dark .dark\:text-gray-400,
+.orange .dark\:text-gray-400,
+.purple .dark\:text-gray-400,
+.green .dark\:text-gray-400,
+.light .text-gray-500,
+.dark .text-gray-500,
+.orange .text-gray-500,
+.purple .text-gray-500,
+.green .text-gray-500 {
+  color: var(--text-secondary) !important;
+}
+
+/* Border colors */
+.light .border-gray-200,
+.dark .border-gray-200,
+.orange .border-gray-200,
+.purple .border-gray-200,
+.green .border-gray-200,
+.dark .dark\:border-gray-700,
+.orange .dark\:border-gray-700,
+.purple .dark\:border-gray-700,
+.green .dark\:border-gray-700 {
+  border-color: var(--card-border) !important;
+}
+
+/* Hover backgrounds */
+.light .hover\:bg-gray-50:hover,
+.dark .hover\:bg-gray-50:hover,
+.orange .hover\:bg-gray-50:hover,
+.purple .hover\:bg-gray-50:hover,
+.green .hover\:bg-gray-50:hover,
+.dark .dark\:hover\:bg-gray-700:hover,
+.orange .dark\:hover\:bg-gray-700:hover,
+.purple .dark\:hover\:bg-gray-700:hover,
+.green .dark\:hover\:bg-gray-700:hover,
+.dark .dark\:hover\:bg-gray-700\/50:hover,
+.orange .dark\:hover\:bg-gray-700\/50:hover,
+.purple .dark\:hover\:bg-gray-700\/50:hover,
+.green .dark\:hover\:bg-gray-700\/50:hover {
+  background-color: var(--hover) !important;
+}
+
+/* Divide colors */
+.light .divide-gray-200 > * + *,
+.dark .divide-gray-200 > * + *,
+.orange .divide-gray-200 > * + *,
+.purple .divide-gray-200 > * + *,
+.green .divide-gray-200 > * + *,
+.dark .dark\:divide-gray-700 > * + *,
+.orange .dark\:divide-gray-700 > * + *,
+.purple .dark\:divide-gray-700 > * + *,
+.green .dark\:divide-gray-700 > * + * {
+  border-color: var(--card-border) !important;
+}
+
+/* Background gradients - override for themed pages */
+.light .bg-gradient-to-br,
+.dark .bg-gradient-to-br,
+.orange .bg-gradient-to-br,
+.purple .bg-gradient-to-br,
+.green .bg-gradient-to-br {
+  /* Keep gradient backgrounds from theme base */
+}
+
+/* Specific theme background overrides for main page areas */
+.dark .from-gray-50,
+.orange .from-gray-50,
+.purple .from-gray-50,
+.green .from-gray-50 {
+  --tw-gradient-from: var(--background) var(--tw-gradient-from-position);
+  --tw-gradient-to: transparent var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.dark .to-gray-100,
+.orange .to-gray-100,
+.purple .to-gray-100,
+.green .to-gray-100 {
+  --tw-gradient-to: var(--card-bg) var(--tw-gradient-to-position);
+}
+
+.dark .from-gray-900,
+.orange .from-gray-900,
+.purple .from-gray-900,
+.green .from-gray-900 {
+  --tw-gradient-from: var(--background) var(--tw-gradient-from-position);
+  --tw-gradient-to: transparent var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.dark .to-gray-800,
+.orange .to-gray-800,
+.purple .to-gray-800,
+.green .to-gray-800 {
+  --tw-gradient-to: var(--card-bg) var(--tw-gradient-to-position);
+}
+
+/* Dark Theme Specific */
+.dark .glass {
+  background: rgba(30, 41, 59, 0.5);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(51, 65, 85, 0.5);
+}
+
+/* Orange Theme Specific */
+.orange input,
+.orange select,
+.orange textarea {
+  background-color: #fff !important;
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+
+.orange input:focus,
+.orange select:focus,
+.orange textarea:focus {
+  border-color: var(--accent-from);
+  outline: none;
+  ring: 2px;
+  ring-color: var(--accent-from);
+  ring-opacity: 0.5;
+}
+
+/* Purple Theme Specific */
+.purple input,
+.purple select,
+.purple textarea {
+  background-color: #fff !important;
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+
+.purple input:focus,
+.purple select:focus,
+.purple textarea:focus {
+  border-color: var(--accent-from);
+  outline: none;
+  ring: 2px;
+  ring-color: var(--accent-from);
+  ring-opacity: 0.5;
+}
+
+/* Green Theme Specific */
+.green input,
+.green select,
+.green textarea {
+  background-color: #fff !important;
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+
+.green input:focus,
+.green select:focus,
+.green textarea:focus {
+  border-color: var(--accent-from);
+  outline: none;
+  ring: 2px;
+  ring-color: var(--accent-from);
+  ring-opacity: 0.5;
+}
+
+/* ================================
+   PRINT STYLES
+   ================================ */
+
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* ================================
+   ACCESSIBILITY
+   ================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus visible for keyboard navigation */
+*:focus-visible {
+  outline: 2px solid var(--accent-from);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ================================
+   LOADING STATES
+   ================================ */
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--card-bg) 0%,
+    var(--hover) 50%,
+    var(--card-bg) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 0.5rem;
+}
+
+/* ================================
+   CUSTOM COMPONENTS
+   ================================ */
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-from), var(--accent-to));
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px -4px var(--shadow);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background: var(--card-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background: var(--hover);
+  transform: translateY(-2px);
+}
+
+.input-field {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--accent-from);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.input-field::placeholder {
+  color: var(--text-secondary);
 }

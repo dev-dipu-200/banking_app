@@ -1,4 +1,4 @@
-// app/(user)/layout.tsx
+// app/user/layout.tsx
 'use client';
 import UserSidebar from '@/components/UserSidebar'; 
 

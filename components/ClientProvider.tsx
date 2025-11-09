@@ -4,6 +4,7 @@
 import { useEffect } from 'react';
 import useStore from '@/store/store.js';
 import Navbar from '@/components/Navbar';
+import { ThemeProvider } from '@/contexts/ThemeContext';
 
 export default function ClientProvider({
   children,
@@ -11,7 +12,6 @@ export default function ClientProvider({
   children: React.ReactNode;
 }) {
   const initializeSession = useStore((state) => state.initializeSession);
-  const isAuthenticated = useStore((state) => state.isAuthenticated);
 
   // Initialize session from cookies/localStorage on mount
   useEffect(() => {
@@ -19,9 +19,9 @@ export default function ClientProvider({
   }, [initializeSession]);
 
   return (
-    <>
-      <Navbar isAuthenticated={isAuthenticated} />
+    <ThemeProvider>
+      <Navbar />
       {children}
-    </>
+    </ThemeProvider>
   );
 }
