@@ -1,20 +1,23 @@
-// app/user/layout.tsx
+// app/(authenticated)/layout.tsx
 'use client';
-import UserSidebar from '@/components/UserSidebar'; 
+import UserSidebar from '@/components/UserSidebar';
 
-export default function UserLayout({
+export default function AuthenticatedLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen flex flex-col bg-zinc-50 dark:bg-gray-900">
-      <div className="flex flex-1">
-        {/* Sidebar – client component (uses usePathname) */}
-        <UserSidebar />
-        {/* Main content area */}
-        <main className="flex-1 p-6 overflow-y-auto">{children}</main>
-      </div>
+    <div className="min-h-screen" style={{ background: 'var(--background)' }}>
+      {/* Sidebar – client component (uses usePathname) */}
+      <UserSidebar />
+
+      {/* Main content area with proper margin for sidebar */}
+      <main className="pt-16 min-h-screen md:pl-64 transition-all duration-300">
+        <div className="p-6">
+          {children}
+        </div>
+      </main>
     </div>
   );
 }

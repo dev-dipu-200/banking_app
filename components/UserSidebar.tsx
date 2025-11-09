@@ -1,4 +1,4 @@
-// app/(user)/UserSidebar.tsx
+// components/UserSidebar.tsx
 'use client';
 
 import Link from 'next/link';
@@ -21,7 +21,12 @@ export default function UserSidebar() {
       {/* Mobile Toggle */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-4 left-4 z-50 md:hidden p-2 rounded-md bg-white dark:bg-gray-800 shadow-md"
+        className="fixed top-20 left-4 z-50 md:hidden p-3 rounded-xl shadow-lg"
+        style={{
+          background: 'var(--card-bg)',
+          border: '1px solid var(--card-border)',
+          color: 'var(--text-primary)',
+        }}
       >
         <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
@@ -36,12 +41,23 @@ export default function UserSidebar() {
       {/* Sidebar */}
       <aside
         className={`
-          fixed inset-y-0 left-0 z-40 w-64 bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 shadow-2xl border-r border-gray-200 dark:border-gray-700
+          fixed top-16 bottom-0 left-0 z-40 w-64 shadow-2xl
           transform transition-transform duration-300 ease-in-out
           ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0
         `}
+        style={{
+          background: `linear-gradient(to bottom, var(--card-bg), var(--background))`,
+          borderRight: `1px solid var(--card-border)`,
+        }}
       >
-        <div className="p-6 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-blue-600 to-purple-600">
+        {/* Sidebar Header */}
+        <div
+          className="p-6 border-b"
+          style={{
+            background: `linear-gradient(135deg, var(--accent-from), var(--accent-to))`,
+            borderColor: 'var(--card-border)',
+          }}
+        >
           <div className="flex items-center space-x-3">
             <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
               <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -57,7 +73,8 @@ export default function UserSidebar() {
           </div>
         </div>
 
-        <nav className="mt-4 p-3 space-y-2">
+        {/* Navigation */}
+        <nav className="mt-4 p-3 space-y-2 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 200px)' }}>
           {navItems.map((item) => {
             const isActive =
               pathname === item.href ||
@@ -99,16 +116,27 @@ export default function UserSidebar() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setIsOpen(false)}
-                className={`
-                  flex items-center space-x-3 w-full text-left px-4 py-3 text-sm font-semibold
-                  rounded-xl
-                  transition-all duration-200
-                  ${
-                    isActive
-                      ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg transform scale-105'
-                      : 'text-gray-700 dark:text-gray-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 dark:hover:from-gray-700 dark:hover:to-gray-600 hover:scale-105'
+                className="flex items-center space-x-3 w-full text-left px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-200 hover:scale-105"
+                style={
+                  isActive
+                    ? {
+                        background: `linear-gradient(135deg, var(--accent-from), var(--accent-to))`,
+                        color: 'white',
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                        transform: 'scale(1.05)',
+                      }
+                    : { color: 'var(--text-primary)' }
+                }
+                onMouseEnter={(e) => {
+                  if (!isActive) {
+                    e.currentTarget.style.background = 'var(--hover)';
                   }
-                `}
+                }}
+                onMouseLeave={(e) => {
+                  if (!isActive) {
+                    e.currentTarget.style.background = 'transparent';
+                  }
+                }}
               >
                 {getIcon(item.label)}
                 <span>{item.label}</span>
@@ -126,7 +154,7 @@ export default function UserSidebar() {
       {/* Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-30 md:hidden"
+          className="fixed inset-0 bg-black/50 z-30 md:hidden top-16"
           onClick={() => setIsOpen(false)}
         />
       )}
