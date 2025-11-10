@@ -186,7 +186,7 @@ export default function AdminDashboard() {
               </svg>
             }
           >
-            <LineChart data={revenueData} />
+            <LineChart data={revenueData} is_grid={false} />
           </ChartWrapper>
 
           {/* User Growth Bar Chart */}
@@ -199,7 +199,7 @@ export default function AdminDashboard() {
               </svg>
             }
           >
-            <BarChart data={userGrowthData} />
+            <BarChart data={userGrowthData} is_grid={false} />
           </ChartWrapper>
 
           {/* Account Types Pie Chart */}

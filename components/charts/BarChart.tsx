@@ -30,9 +30,11 @@ export interface BarChartData {
 interface BarChartProps {
   data: BarChartData;
   options?: ChartOptions<'bar'>;
+  is_multiple_data?: boolean;
+  is_grid?: boolean;
 }
 
-export default function BarChart({ data, options }: BarChartProps) {
+export default function BarChart({ data, options, is_multiple_data = false, is_grid = true }: BarChartProps) {
   const defaultOptions: ChartOptions<'bar'> = {
     responsive: true,
     maintainAspectRatio: true,
@@ -42,6 +44,7 @@ export default function BarChart({ data, options }: BarChartProps) {
     },
     plugins: {
       legend: {
+        display: is_multiple_data ? true : (data.datasets.length > 1),
         position: 'top',
         labels: {
           color: 'rgb(156, 163, 175)',
@@ -94,6 +97,7 @@ export default function BarChart({ data, options }: BarChartProps) {
       y: {
         beginAtZero: true,
         grid: {
+          display: is_grid,
           color: 'rgba(156, 163, 175, 0.1)',
           lineWidth: 1,
         },
@@ -113,7 +117,7 @@ export default function BarChart({ data, options }: BarChartProps) {
       },
       x: {
         grid: {
-          display: false,
+          display: is_grid,
         },
         ticks: {
           color: 'rgb(156, 163, 175)',

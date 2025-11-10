@@ -19,9 +19,10 @@ export interface DoughnutChartData {
 interface DoughnutChartProps {
   data: DoughnutChartData;
   options?: ChartOptions<'doughnut'>;
+  is_multiple_data?: boolean;
 }
 
-export default function DoughnutChart({ data, options }: DoughnutChartProps) {
+export default function DoughnutChart({ data, options, is_multiple_data = false }: DoughnutChartProps) {
   const defaultOptions: ChartOptions<'doughnut'> = {
     responsive: true,
     maintainAspectRatio: true,
@@ -31,6 +32,7 @@ export default function DoughnutChart({ data, options }: DoughnutChartProps) {
     },
     plugins: {
       legend: {
+        display: is_multiple_data ? true : (data.datasets.length > 1),
         position: 'bottom',
         labels: {
           color: 'rgb(156, 163, 175)',

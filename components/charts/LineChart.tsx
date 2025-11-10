@@ -38,9 +38,11 @@ export interface LineChartData {
 interface LineChartProps {
   data: LineChartData;
   options?: ChartOptions<'line'>;
+  is_multiple_data?: boolean;
+  is_grid?: boolean;
 }
 
-export default function LineChart({ data, options }: LineChartProps) {
+export default function LineChart({ data, options, is_multiple_data = false, is_grid = true }: LineChartProps) {
   const defaultOptions: ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: true,
@@ -54,6 +56,7 @@ export default function LineChart({ data, options }: LineChartProps) {
     },
     plugins: {
       legend: {
+        display: is_multiple_data ? true : (data.datasets.length > 1),
         position: 'top',
         labels: {
           color: 'rgb(156, 163, 175)',
@@ -106,6 +109,7 @@ export default function LineChart({ data, options }: LineChartProps) {
       y: {
         beginAtZero: true,
         grid: {
+          display: is_grid,
           color: 'rgba(156, 163, 175, 0.1)',
           lineWidth: 1,
         },
@@ -125,6 +129,7 @@ export default function LineChart({ data, options }: LineChartProps) {
       },
       x: {
         grid: {
+          display: is_grid,
           color: 'rgba(156, 163, 175, 0.05)',
           lineWidth: 1,
         },

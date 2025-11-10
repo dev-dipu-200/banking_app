@@ -19,9 +19,10 @@ export interface PieChartData {
 interface PieChartProps {
   data: PieChartData;
   options?: ChartOptions<'pie'>;
+  is_multiple_data?: boolean;
 }
 
-export default function PieChart({ data, options }: PieChartProps) {
+export default function PieChart({ data, options, is_multiple_data = false }: PieChartProps) {
   const defaultOptions: ChartOptions<'pie'> = {
     responsive: true,
     maintainAspectRatio: true,
@@ -31,6 +32,7 @@ export default function PieChart({ data, options }: PieChartProps) {
     },
     plugins: {
       legend: {
+        display: is_multiple_data ? true : (data.datasets.length > 1),
         position: 'bottom',
         labels: {
           color: 'rgb(156, 163, 175)',
