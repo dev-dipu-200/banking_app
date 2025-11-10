@@ -110,8 +110,12 @@ export default function Login({
     <div className="flex items-center justify-center font-sans">
       <form
         onSubmit={handleSubmit}
-        style={{ width }}
-        className={`p-8 rounded-2xl shadow-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm w-full ${sizeClasses[size] || sizeClasses.md} border border-gray-200 dark:border-gray-700`}
+        style={{
+          width,
+          background: 'var(--card-bg)',
+          borderColor: 'var(--card-border)'
+        }}
+        className={`p-8 rounded-2xl shadow-2xl backdrop-blur-sm w-full ${sizeClasses[size] || sizeClasses.md} border`}
       >
         <div className="text-center mb-6">
           <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
@@ -126,7 +130,8 @@ export default function Login({
           <div key={field.id} className="mb-5">
             <label
               htmlFor={field.id}
-              className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
+              className="block text-sm font-semibold mb-2"
+              style={{ color: 'var(--text-primary)' }}
             >
               {field.label}
             </label>
@@ -136,7 +141,12 @@ export default function Login({
                 id={field.id}
                 value={formData[field.id as keyof typeof formData] || ''}
                 onChange={handleInputChange}
-                className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all duration-200 hover:border-gray-300 dark:hover:border-gray-500"
+                style={{
+                  background: 'var(--background)',
+                  borderColor: 'var(--border)',
+                  color: 'var(--text-primary)'
+                }}
+                className="w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                 required
                 disabled={isLoading}
                 placeholder={`Enter your ${field.label.toLowerCase()}`}
@@ -160,8 +170,8 @@ export default function Login({
         ))}
 
         {error && (
-          <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-            <p className="text-red-600 dark:text-red-400 text-sm flex items-center">
+          <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg" style={{ background: 'rgba(239, 68, 68, 0.1)', borderColor: 'rgba(239, 68, 68, 0.3)' }}>
+            <p className="text-sm flex items-center" style={{ color: '#dc2626' }}>
               <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
               </svg>
@@ -194,8 +204,8 @@ export default function Login({
           )}
         </button>
 
-        <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-          <p className="text-xs text-center text-gray-600 dark:text-gray-400">
+        <div className="mt-6 p-4 rounded-lg border" style={{ background: 'rgba(59, 130, 246, 0.1)', borderColor: 'rgba(59, 130, 246, 0.3)' }}>
+          <p className="text-xs text-center" style={{ color: 'var(--text-secondary)' }}>
             <span className="font-semibold">Demo Credentials:</span><br />
             <span className="font-mono">Dipu</span> or <span className="font-mono">user</span> / <span className="font-mono">Dipu1234@</span>
           </p>

@@ -45,7 +45,7 @@ export default function Navbar() {
         { label: 'Savings Account', href: '/services/savings', isPrivate: false },
       ],
     },
-    { label: 'Dashboard', href: '/dashboard', isPrivate: true },
+    // { label: 'Dashboard', href: '/dashboard', isPrivate: true },
     { label: 'Profile', href: '/profile', isPrivate: true },
     { label: 'Contact', href: '/contact', isPrivate: false },
   ];

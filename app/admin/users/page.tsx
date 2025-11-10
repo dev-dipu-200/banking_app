@@ -18,7 +18,9 @@ interface User {
 export default function UsersPage() {
   const toast = useToast();
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   // Generate more mock users for pagination demo
   const mockUsers: User[] = [
@@ -251,21 +253,33 @@ export default function UsersPage() {
 
   const handleViewUser = (user: User) => {
     setSelectedUser(user);
-    setIsModalOpen(true);
+    setIsViewModalOpen(true);
     toast.info(`Viewing details for ${user.name}`);
   };
 
   const handleEditUser = (user: User) => {
-    toast.warning(`Edit mode for ${user.name}`, 'Warning');
+    setEditingUser({ ...user });
+    setIsEditModalOpen(true);
+    toast.info(`Editing ${user.name}`, 'Edit Mode');
   };
 
   const handleDeleteUser = (user: User) => {
-    toast.error(`Cannot delete ${user.name}`, 'Error');
+    const confirmed = confirm(`Are you sure you want to delete ${user.name}?`);
+    if (confirmed) {
+      toast.success(`${user.name} deleted successfully`, 'Deleted');
+    }
   };
 
-  const handleSaveUser = () => {
+  const handleSaveEdit = () => {
+    if (!editingUser) return;
     toast.success('User updated successfully!', 'Success');
-    setIsModalOpen(false);
+    setIsEditModalOpen(false);
+    setEditingUser(null);
+  };
+
+  const handleEditChange = (field: keyof User, value: string) => {
+    if (!editingUser) return;
+    setEditingUser({ ...editingUser, [field]: value });
   };
 
   const columns: Column<User>[] = [
@@ -311,41 +325,6 @@ export default function UsersPage() {
         );
       },
     },
-    {
-      key: 'actions',
-      label: 'Actions',
-      render: (_, row) => (
-        <div className="flex gap-2">
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleViewUser(row);
-            }}
-            className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 font-medium transition-colors"
-          >
-            View
-          </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleEditUser(row);
-            }}
-            className="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300 font-medium transition-colors"
-          >
-            Edit
-          </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleDeleteUser(row);
-            }}
-            className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 font-medium transition-colors"
-          >
-            Delete
-          </button>
-        </div>
-      ),
-    },
   ];
 
   return (
@@ -373,29 +352,30 @@ export default function UsersPage() {
         is_csr={true}
         itemsPerPage={10}
         showPagination={true}
-        onRowClick={(row) => handleViewUser(row)}
+        showActions={true}
+        showView={true}
+        showEdit={true}
+        showDelete={true}
+        onView={(row) => handleViewUser(row)}
+        onEdit={(row) => handleEditUser(row)}
+        onDelete={(row) => handleDeleteUser(row)}
         emptyMessage="No users found"
       />
 
-      {/* User Detail Modal */}
+      {/* View User Modal */}
       <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isViewModalOpen}
+        onClose={() => setIsViewModalOpen(false)}
         title="User Details"
         size="lg"
         footer={
           <div className="flex justify-end gap-3">
             <button
-              onClick={() => setIsModalOpen(false)}
+              onClick={() => setIsViewModalOpen(false)}
               className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              style={{ background: 'var(--card-bg)', borderColor: 'var(--border)', color: 'var(--text-primary)' }}
             >
-              Cancel
-            </button>
-            <button
-              onClick={handleSaveUser}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              Save Changes
+              Close
             </button>
           </div>
         }
@@ -476,6 +456,108 @@ export default function UsersPage() {
                 <span className="text-gray-700 dark:text-gray-300">
                   Active
                 </span>
+              </div>
+            </div>
+          </div>
+        )}
+      </Modal>
+
+      {/* Edit User Modal */}
+      <Modal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        title="Edit User"
+        size="lg"
+        footer={
+          <div className="flex justify-end gap-3">
+            <button
+              onClick={() => setIsEditModalOpen(false)}
+              className="px-4 py-2 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              style={{ background: 'var(--card-bg)', borderColor: 'var(--border)', color: 'var(--text-primary)' }}
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleSaveEdit}
+              className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-colors"
+            >
+              Save Changes
+            </button>
+          </div>
+        }
+      >
+        {editingUser && (
+          <div className="space-y-4">
+            {/* Avatar Section */}
+            <div className="flex items-center gap-4 pb-4 border-b" style={{ borderColor: 'var(--border)' }}>
+              <img
+                src={editingUser.avatar}
+                alt={editingUser.name}
+                className="w-16 h-16 rounded-full border-4 border-blue-100 dark:border-blue-900"
+              />
+              <div>
+                <h3 className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>
+                  {editingUser.name}
+                </h3>
+                <p style={{ color: 'var(--text-secondary)' }}>ID: #{editingUser.id}</p>
+              </div>
+            </div>
+
+            {/* Edit Form */}
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
+                  Name
+                </label>
+                <input
+                  type="text"
+                  value={editingUser.name}
+                  onChange={(e) => handleEditChange('name', e.target.value)}
+                  className="w-full px-4 py-2 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  style={{ background: 'var(--background)', borderColor: 'var(--border)', color: 'var(--text-primary)' }}
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
+                  Email
+                </label>
+                <input
+                  type="email"
+                  value={editingUser.email}
+                  onChange={(e) => handleEditChange('email', e.target.value)}
+                  className="w-full px-4 py-2 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  style={{ background: 'var(--background)', borderColor: 'var(--border)', color: 'var(--text-primary)' }}
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
+                  Phone
+                </label>
+                <input
+                  type="tel"
+                  value={editingUser.phone}
+                  onChange={(e) => handleEditChange('phone', e.target.value)}
+                  className="w-full px-4 py-2 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  style={{ background: 'var(--background)', borderColor: 'var(--border)', color: 'var(--text-primary)' }}
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
+                  Role
+                </label>
+                <select
+                  value={editingUser.role}
+                  onChange={(e) => handleEditChange('role', e.target.value)}
+                  className="w-full px-4 py-2 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  style={{ background: 'var(--background)', borderColor: 'var(--border)', color: 'var(--text-primary)' }}
+                >
+                  <option value="User">User</option>
+                  <option value="Moderator">Moderator</option>
+                  <option value="Admin">Admin</option>
+                </select>
               </div>
             </div>
           </div>

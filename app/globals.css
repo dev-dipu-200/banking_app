@@ -105,8 +105,11 @@ body {
   min-height: 100vh;
   background: var(--background);
   color: var(--foreground);
-  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 /* ================================
@@ -607,4 +610,93 @@ html.theme-transitioning * {
 
 .input-field::placeholder {
   color: var(--text-secondary);
+}
+
+/* ================================
+   THEME-SPECIFIC TEXT VISIBILITY FIXES
+   ================================ */
+
+/* Ensure all text is visible in all themes */
+.orange *,
+.purple *,
+.green * {
+  color: inherit;
+}
+
+/* Fix for text that might be invisible in colored themes */
+.orange .text-gray-700,
+.purple .text-gray-700,
+.green .text-gray-700 {
+  color: var(--text-primary) !important;
+}
+
+.orange .text-gray-800,
+.purple .text-gray-800,
+.green .text-gray-800 {
+  color: var(--text-primary) !important;
+}
+
+.orange .text-gray-300,
+.purple .text-gray-300,
+.green .text-gray-300 {
+  color: var(--text-secondary) !important;
+}
+
+/* Ensure gradient text is always visible */
+.gradient-text {
+  background: linear-gradient(135deg, var(--accent-from), var(--accent-to));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700; /* Make gradient text bolder for better visibility */
+}
+
+/* Force proper contrast for all themes */
+.light *[class*="text-"],
+.dark *[class*="text-"],
+.orange *[class*="text-"],
+.purple *[class*="text-"],
+.green *[class*="text-"] {
+  color: inherit;
+}
+
+/* Chart text visibility */
+canvas {
+  color-scheme: light dark;
+}
+
+/* Table text visibility */
+table {
+  color: var(--text-primary);
+}
+
+thead {
+  color: var(--text-primary);
+}
+
+tbody {
+  color: var(--text-primary);
+}
+
+/* Button text visibility */
+button {
+  color: inherit;
+}
+
+/* Link text visibility */
+a {
+  color: inherit;
+}
+
+/* Specific fixes for each theme's readability */
+.orange {
+  font-weight: 500; /* Slightly bolder for orange theme */
+}
+
+.purple {
+  font-weight: 500; /* Slightly bolder for purple theme */
+}
+
+.green {
+  font-weight: 500; /* Slightly bolder for green theme */
 }

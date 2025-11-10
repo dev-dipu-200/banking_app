@@ -8,6 +8,15 @@ export function middleware(req: NextRequest) {
   const role = req.cookies.get('user_role')?.value;
   const userId = req.cookies.get('user_id')?.value;
 
+  // === Redirect authenticated users away from login page ===
+  if (pathname === '/' && token && role) {
+    if (role === 'admin') {
+      return NextResponse.redirect(new URL('/admin', req.url));
+    } else {
+      return NextResponse.redirect(new URL('/dashboard', req.url));
+    }
+  }
+
   // === Admin Routes ===
   if (pathname.startsWith('/admin')) {
     if (!token || role !== 'admin') {
@@ -50,6 +59,7 @@ export function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
+    '/',
     '/admin/:path*',
     '/dashboard/:path*',
     '/accounts/:path*',

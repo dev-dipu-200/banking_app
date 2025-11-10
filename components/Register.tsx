@@ -95,14 +95,18 @@ export default function Register({
     <div className="flex items-center justify-center font-sans">
       <form
         onSubmit={handleSubmit}
-        style={{ width }}
-        className={`p-8 rounded-2xl shadow-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm w-full ${sizeClasses[size] || sizeClasses.md} border border-gray-200 dark:border-gray-700`}
+        style={{
+          width,
+          background: 'var(--card-bg)',
+          borderColor: 'var(--card-border)'
+        }}
+        className={`p-8 rounded-2xl shadow-2xl backdrop-blur-sm w-full ${sizeClasses[size] || sizeClasses.md} border`}
       >
         <div className="text-center mb-6">
           <h2 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
             Create Account
           </h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+          <p className="text-sm mt-2" style={{ color: 'var(--text-secondary)' }}>
             Join us and start managing your finances
           </p>
         </div>
@@ -111,8 +115,9 @@ export default function Register({
           {fields.map((field) => (
             <div key={field.id}>
               <label
-                className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
+                className="block text-sm font-semibold mb-2"
                 htmlFor={field.id}
+                style={{ color: 'var(--text-primary)' }}
               >
                 {field.label}
               </label>
@@ -123,7 +128,12 @@ export default function Register({
                   value={formData[field.id] || ''}
                   onChange={handleInputChange}
                   placeholder={`Enter your ${field.label.toLowerCase()}`}
-                  className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all duration-200 hover:border-gray-300 dark:hover:border-gray-500"
+                  style={{
+                    background: 'var(--background)',
+                    borderColor: 'var(--border)',
+                    color: 'var(--text-primary)'
+                  }}
+                  className="w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                   required
                 />
                 <div className="absolute right-3 top-1/2 -translate-y-1/2">
@@ -141,8 +151,8 @@ export default function Register({
           Create Account
         </button>
 
-        <div className="mt-6 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
-          <p className="text-xs text-center text-gray-600 dark:text-gray-400">
+        <div className="mt-6 p-4 rounded-lg border" style={{ background: 'rgba(245, 158, 11, 0.1)', borderColor: 'rgba(245, 158, 11, 0.3)' }}>
+          <p className="text-xs text-center" style={{ color: 'var(--text-secondary)' }}>
             Registration is currently in development. Please use the login form with demo credentials.
           </p>
         </div>
