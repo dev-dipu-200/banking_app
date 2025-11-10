@@ -4,10 +4,20 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import useStore from '@/store/store.js';
+import { useToast } from '@/components/ToastProvider';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { logout } = useStore();
+  const toast = useToast();
+
+  const handleLogout = () => {
+    toast.info('Logging you out...', 'Goodbye Admin');
+    setTimeout(() => {
+      logout();
+      toast.success('You have been logged out successfully', 'Logged Out');
+    }, 500);
+  };
 
   const links = [
     { label: 'Admin Home', href: '/admin' },
@@ -56,7 +66,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           {/* Logout Button at bottom */}
           <div className="p-3 border-t border-gray-200 dark:border-gray-700">
             <button
-              onClick={logout}
+              onClick={handleLogout}
               className="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl hover:from-red-600 hover:to-red-700 transition-all shadow-lg transform hover:scale-105"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

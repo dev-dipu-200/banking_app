@@ -5,6 +5,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import useStore from '@/store/store.js';
 import ThemeSwitcher from '@/components/ThemeSwitcher';
+import { useToast } from '@/components/ToastProvider';
 
 interface MenuItem {
   label: string;
@@ -19,6 +20,15 @@ export default function Navbar() {
 
   // Zustand store
   const { isAuthenticated, userRole, logout } = useStore();
+  const toast = useToast();
+
+  const handleLogout = () => {
+    toast.info('Logging you out...', 'Goodbye');
+    setTimeout(() => {
+      logout();
+      toast.success('You have been logged out successfully', 'Logged Out');
+    }, 500);
+  };
 
   const toggleMobileMenu = () => setIsMobileMenuOpen((prev) => !prev);
   const toggleSubMenu = (label: string) =>
@@ -42,7 +52,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className="shadow-lg relative"
+      className="shadow-lg fixed top-0 left-0 right-0 z-50"
       style={{
         background: `linear-gradient(135deg, var(--accent-from), var(--accent-to))`,
       }}
@@ -110,7 +120,7 @@ export default function Navbar() {
             {/* Logout Button (Desktop) */}
             {isAuthenticated && (
               <button
-                onClick={logout}
+                onClick={handleLogout}
                 className="ml-2 px-4 py-2 text-sm font-semibold bg-white/10 text-white rounded-lg hover:bg-white/20 transition-all"
               >
                 Logout
@@ -198,7 +208,7 @@ export default function Navbar() {
             {isAuthenticated && (
               <button
                 onClick={() => {
-                  logout();
+                  handleLogout();
                   setIsMobileMenuOpen(false);
                 }}
                 className="block w-full text-left px-4 py-2.5 text-base font-medium text-red-600 hover:text-red-800"

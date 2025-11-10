@@ -1,4 +1,7 @@
-'use client'
+'use client';
+
+import { useState } from 'react';
+import { useToast } from '@/components/ToastProvider';
 
 interface Field {
   id: string;
@@ -23,10 +26,40 @@ export default function Register({
     { id: "phone", label: "Phone Number", type: "tel" },
   ]
 }: RegisterProps) {
+  const toast = useToast();
+  const [formData, setFormData] = useState<Record<string, string>>({});
+
   const sizeClasses = {
     sm: "max-w-sm",
     md: "max-w-md",
     lg: "max-w-lg",
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setFormData((prev) => ({ ...prev, [id]: value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Validate passwords match
+    if (formData.password !== formData.confirmPassword) {
+      toast.error('Passwords do not match!', 'Validation Error');
+      return;
+    }
+
+    // Validate required fields
+    const requiredFields = ['email', 'password', 'confirmPassword', 'type', 'phone'];
+    const missingFields = requiredFields.filter(field => !formData[field]);
+
+    if (missingFields.length > 0) {
+      toast.warning('Please fill in all required fields', 'Incomplete Form');
+      return;
+    }
+
+    // Show warning that registration is not yet implemented
+    toast.warning('Registration functionality is currently in development. Please use the login form with demo credentials.', 'Coming Soon');
   };
 
   const getFieldIcon = (type: string) => {
@@ -61,6 +94,7 @@ export default function Register({
   return (
     <div className="flex items-center justify-center font-sans">
       <form
+        onSubmit={handleSubmit}
         style={{ width }}
         className={`p-8 rounded-2xl shadow-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm w-full ${sizeClasses[size] || sizeClasses.md} border border-gray-200 dark:border-gray-700`}
       >
@@ -86,8 +120,11 @@ export default function Register({
                 <input
                   type={field.type}
                   id={field.id}
+                  value={formData[field.id] || ''}
+                  onChange={handleInputChange}
                   placeholder={`Enter your ${field.label.toLowerCase()}`}
                   className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-all duration-200 hover:border-gray-300 dark:hover:border-gray-500"
+                  required
                 />
                 <div className="absolute right-3 top-1/2 -translate-y-1/2">
                   {getFieldIcon(field.type)}
@@ -98,9 +135,8 @@ export default function Register({
         </div>
 
         <button
-          type="button"
+          type="submit"
           className="w-full mt-6 bg-gradient-to-r from-green-500 to-blue-600 text-white py-3.5 rounded-xl font-semibold hover:from-green-600 hover:to-blue-700 transition-all duration-200 shadow-lg transform hover:scale-[1.02] hover:shadow-xl"
-          onClick={() => alert('Registration functionality to be implemented')}
         >
           Create Account
         </button>

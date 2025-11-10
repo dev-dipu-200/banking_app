@@ -4,6 +4,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import useStore from '@/store/store.js';
+import { useToast } from '@/components/ToastProvider';
 
 interface Field {
   id: string;
@@ -31,6 +32,7 @@ export default function Login({
 
   const router = useRouter();
   const { login } = useStore();
+  const toast = useToast();
 
   const sizeClasses = {
     sm: 'max-w-sm',
@@ -67,12 +69,14 @@ export default function Login({
 
     if (!user) {
       setError('User not found');
+      toast.error('User not found. Please check your username.', 'Login Failed');
       setIsLoading(false);
       return;
     }
 
     if (user.password !== password) {
       setError('Incorrect password');
+      toast.error('Incorrect password. Please try again.', 'Login Failed');
       setIsLoading(false);
       return;
     }
@@ -86,6 +90,12 @@ export default function Login({
     document.cookie = `user_role=${user.role}; path=/; max-age=86400; SameSite=Strict`;
     document.cookie = `user_id=${user.userId}; path=/; max-age=86400; SameSite=Strict`;
 
+    // Show success toast
+    toast.success(
+      `Welcome ${normalizedUsername}! Redirecting to ${user.role === 'admin' ? 'admin panel' : 'dashboard'}...`,
+      'Login Successful'
+    );
+
     // Redirect based on role
     setTimeout(() => {
       if (user.role === 'admin') {
@@ -93,7 +103,7 @@ export default function Login({
       } else {
         router.push('/dashboard');
       }
-    }, 100);
+    }, 1000);
   };
 
   return (
